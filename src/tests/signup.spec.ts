@@ -1,3 +1,16 @@
-import {} from '../presentation/controllers/signup'
+import { SignupController } from '../presentation/controllers/signup'
 
-test()
+test('signup with bad username and expect 400 with param missing', () => {
+  const sut = new SignupController()
+
+  const httpRequest = {
+    body: {
+      email: 'any@example.com',
+      password: 'any_password',
+      passwordConfirmation: 'any_password'
+    }
+  }
+  const httpResponse = sut.handle(httpRequest)
+  expect(httpResponse.statusCode).toBe(400)
+  expect(httpResponse.body).toEqual(new Error('Missing param: username'))
+})
