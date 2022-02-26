@@ -103,3 +103,20 @@ test('signup with bad email and expect 400 with param missing', () => {
   expect(httpResponse.statusCode).toBe(400)
   expect(httpResponse.body).toEqual(new InvalidParamsError('email'))
 })
+
+test('Should pass with correct email account', () => {
+  const { sut, emailValidatorStub } = makeSut()
+  const emailSpyOn = jest.spyOn(emailValidatorStub, 'isValid')
+
+  const httpRequest = {
+    body: {
+      username: 'any',
+      email: 'any@example.com',
+      password: 'any_password',
+      passwordConfirmation: 'any_password'
+    }
+  }
+
+  sut.handle(httpRequest)
+  expect(emailSpyOn).toHaveBeenCalledWith('any@example.com')
+})
